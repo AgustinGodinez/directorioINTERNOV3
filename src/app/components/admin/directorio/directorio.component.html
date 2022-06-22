@@ -1,0 +1,343 @@
+<div *ngIf="userRol==='admin'; else noAdmin">
+
+  <div  class="w-100 body-form bg-white mt-4 mb-4  rounded-3 shadow">
+     
+  <div>
+    <br/>
+    <h2>Lista de Empleados</h2>
+    <br/>
+    <label style="margin-left:45px; font-size:30px; color:rgb(10, 1, 1)">Filtros</label>
+    <br/>
+    <div class="mb-3 row">
+      <div class="col-sm-10" style="width:30% ; margin-left: 50px;">
+        <input type="text" class="form-control"  placeholder="Search..." [(ngModel)]="filterAdmin" >
+      </div>
+    </div>
+    <select class="form-select" aria-label="Default select example" style="width:26%; margin-left:50px" name="filterAdmin" [(ngModel)]="filterAdmin">
+      <option  selected>Proyectos: </option>
+      <option *ngFor="let item2 of collection2.data2" >{{item2.proyecto_asignado2}}</option>
+      
+    </select>
+    <div class="d-grid gap-1 col-2 mx-auto">
+      <button class="btn btn-primary" id="boton" type="button"  (click)="open(content)">Agregar  Empleado</button>
+    </div>
+    
+    <br/>
+    <br/>
+  <table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre </th>
+      <th>Apellido</th>
+      <th>Correo_personal</th>
+      <th>Correo_corporativo</th>
+      <th>Telefono_contacto</th>
+      <th>Fecha_Nacimiento</th>
+      <th>Proyecto_asignado</th>
+      <th>Fecha_incorporación</th>
+      <th>Fecha_baja</th>
+      <th>Responsable_directo</th>  
+      <th>Opciones</th>
+      <th>Activo</th>
+
+    </tr>
+  </thead>
+  <tbody  >
+  <tr *ngFor="let item of collection.data | pipeAdmin: filterAdmin | paginate:config">
+    <td>{{item.id}}</td>
+    <td>{{item.nombre}}</td>
+    <td>{{item.apellido}}</td>
+    <td>{{item.correoPersonal}}</td>
+    <td>{{item.correoCorporativo}}</td>
+    <td>{{item.telefono}}</td>
+    <td>{{item.fecha_nacimiento}}</td>
+    <td >{{item.proyecto_asignado}}</td>
+    <td>{{item.fecha_incorporacion}}</td>
+    <td>{{item.fecha_baja}}</td>
+    <td>{{item.responsable_directo}}</td>
+   <td>
+    <button type="button" class="btn btn-primary" (click)="openEditar(content,item)">Editar</button>
+    <br/>
+    <button type="button" class="btn btn-danger" (click)="editarStatus(content2,item)" style="margin-top:5px; ">Cambiar Estatus</button>
+    <br/>
+    <button type="button" class="btn btn-warning" (click)="editarProyecto(content3,item)" style="margin-top:5px; ">Agregar Proyecto</button>
+    <br/>
+  </td>
+  <td>
+    {{item.activo}}
+
+  </td>
+</tr>
+  
+  
+  </tbody>
+  </table>
+  
+  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Agregar Empleado</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+     <div class="form-group">
+       <form [formGroup]="employeeForm" >
+          <div class="form-group">
+            <label>Id</label>
+            <input type="number" formControlName="id" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" formControlName="nombre" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" formControlName="apellido" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Correo_personal</label>
+            <input type="email" formControlName="correoPersonal" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Correo_corporativo</label>
+            <input type="email" formControlName="correoCorporativo" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Telefono</label>
+            <input type="text" formControlName="telefono" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Fecha_Nacimiento</label>
+            <input type="date" formControlName="fecha_nacimiento" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Proyectos: </label>
+            <select class="form-select" aria-label="Default select example" formControlName="proyecto_asignado" name="filterAdmin">
+              <option  selected>Proyectos: </option>
+              <option *ngFor="let item2 of collection2.data2" >{{item2.proyecto_asignado2}}</option>
+              
+            </select>
+          </div>
+    
+          <div class="form-group">
+            <label>Fecha_incorporación</label>
+            <input type="date" formControlName="fecha_incorporacion" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Fecha_baja</label>
+            <input type="date" formControlName="fecha_baja" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Responsable_directo</label>
+            <input type="text" formControlName="responsable_directo" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Activo: </label>
+          <select class="form-select" aria-label="Default select example" style="width: 70%; margin-left:10px" class="form-control" formControlName="activo">
+            <option selected ></option>
+            <option >NO</option>
+            <option >SI</option>
+          </select>
+          </div>
+          
+        </form>
+  
+     </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="guardarEmpleado()">Guardar</button>
+      <button type="button" class="btn btn-outline-dark" (click)="actualizarEmpleado()">Actualizar</button>
+    </div>
+  </ng-template>
+  
+  </div>
+
+
+  <!--Modal para cambiar status-->
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Cambiar Estatus</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+     <div class="form-group">
+       <form [formGroup]="employeeStatus" >
+          <div class="form-group">
+            <label>Cambiar Estatus</label>
+          <select class="form-select" aria-label="Default select example" style="width: 70%; margin-left:10px" class="form-control" formControlName="activo">
+            <option selected ></option>
+            <option >NO</option>
+            <option >SI</option>
+          </select>
+          </div>
+          
+        </form>
+  
+     </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="actualizarStatus()">Cambiar</button>
+    </div>
+  </ng-template>
+
+  <!--Modal para cambiar status-->
+  <ng-template #content3 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Cambiar Estatus</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+     <div class="form-group">
+       <form [formGroup]="proyectForm" >
+        <div class="form-group">
+          <label>Nuevo Proyecto asignado</label>
+          <input type="text" formControlName="proyecto_asignado2" class="form-control">
+        </div>
+        </form>
+  
+     </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="guardarProyecto()">Guardar Proyecto</button>
+    </div>
+  </ng-template>
+  
+  </div>
+
+  <div class="w-100 body-form bg-white mt-4 mb-4  rounded-3 shadow">
+
+    <br/>
+    <h2>Lista de Empleados: Estatus</h2>
+    <br/>
+    <select class="form-select" aria-label="Default select example" style="width:30%; margin-left:50px" name="filterPost" [(ngModel)]="filterActivo" >
+      <option selected>Activo:</option>
+      <option>SI</option>
+      <option>NO</option>
+    </select>
+ 
+    <br/>
+    <br/>
+    
+  <table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre </th>
+      <th>Contacto</th>
+      <th>Fecha_Nacimiento</th>
+      <th>Proyecto_asignado</th>
+      <th>Fecha_incorporación</th>
+      <th>Fecha_baja</th>
+      <th>Responsable_directo</th>
+      <th>Activo</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of  collection.data | filter:filterActivo">
+  <td>{{item.id}}</td>
+  <td>{{item.nombre}}</td>
+  <td>{{item.contacto}}</td>
+  <td>{{item.fecha_nacimiento}}</td>
+  <td >{{item.proyecto_asignado}}</td>
+  <td>{{item.fecha_incorporacion}}</td>
+  <td>{{item.fecha_baja}}</td>
+  <td>{{item.responsable_directo}}</td>
+  <td>{{item.activo}}</td>
+  </tr>
+  </tbody>
+  </table>
+  
+  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  
+  
+  </div>
+
+
+
+
+  
+  <div class="container w-75 body-form bg-white mt-4 mb-4  rounded-3 shadow">
+
+    <br/>
+    <h2>Usuarios Registrados: cambiar Permisos</h2>
+    <br/>    
+    <br/>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre </th>
+        <th>Correo </th>
+        <th>Permisos de administrador</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+    <td>{{user.name}}</td>
+    <td>{{user.email}}</td>
+    <td class="d-flex">
+      <select  class="form-control mx-1" [(ngModel)]="user.roles.rol"  name="roles" (ngModelChange)="onPreUpdateUser(user)">
+        <option type="submit" value='admin'>Con permisos administrador</option>
+        <option  type="submit" value='usuario'>Sin permisos de administrador</option>
+      </select>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+<ng-template #noAdmin>
+  <div class="w-100 body-form bg-white mt-4 mb-4  rounded-3 shadow">
+    <br/>
+    <h2>Lista de Empleados</h2>
+    <br/>
+    <div class="mb-3 row">
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="filterPost" placeholder="Search..." [(ngModel)]="filterPost" style="width:30%; margin-left:50px">
+      </div>
+    </div>
+
+    <br/>
+    <br/>
+  <table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre </th>
+      <th>Contacto</th>
+      <th>Fecha_Nacimiento</th>
+      <th>Proyecto_asignado</th>
+      <th>Fecha_incorporación</th>
+      <th>Fecha_baja</th>
+      <th>Responsable_directo</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of  collection.data | filter:filterPost">
+  <td>{{item.id}}</td>
+  <td>{{item.nombre}}</td>
+  <td>{{item.contacto}}</td>
+  <td>{{item.fecha_nacimiento}}</td>
+  <td >{{item.proyecto_asignado}}</td>
+  <td>{{item.fecha_incorporacion}}</td>
+  <td>{{item.fecha_baja}}</td>
+  <td>{{item.responsable_directo}}</td>
+  
+  </tr>
+  </tbody>
+  </table>
+  
+  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  
+  
+  </div>
+</ng-template>
+
