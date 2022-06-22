@@ -9,7 +9,16 @@ export class PipeAdminPipe implements PipeTransform {
     if (arg === '' || arg.length < 1) return value;
     let resultAdmin = [];
     for (const item of value) {
-      if (item.responsable_directo.toLowerCase().indexOf(arg.toLowerCase()) > -1  || item.proyecto_asignado.toLowerCase().indexOf(arg.toLowerCase()) > -1 ) {
+      if (item.nombre.toLowerCase().indexOf(arg.toLowerCase()) > -1  
+      || item.apellido.toLowerCase().indexOf(arg.toLowerCase()) > -1 
+      || item.correoPersonal.toLowerCase().indexOf(arg.toLowerCase()) > -1  
+      || item.correoCorporativo.toLowerCase().indexOf(arg.toLowerCase()) > -1
+      || item.telefono.toLowerCase().indexOf(arg.toLowerCase()) > -1  
+      || item.fecha_nacimiento.toLowerCase().indexOf(arg.toLowerCase()) > -1 
+      || item.proyecto_asignado.toLowerCase().indexOf(arg.toLowerCase()) > -1 
+      || item.fecha_incorporacion.toLowerCase().indexOf(arg.toLowerCase()) > -1  
+      || item.fecha_baja.toLowerCase().indexOf(arg.toLowerCase()) > -1
+      || item.responsable_directo.toLowerCase().indexOf(arg.toLowerCase()) > -1  ) {
         resultAdmin.push(item);
       };
  };
