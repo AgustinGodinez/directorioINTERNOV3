@@ -69,7 +69,7 @@ export class DirectorioComponent implements OnInit {
 
 
     this.employeeForm = this.fb.group({
-      id:['',Validators.required],
+      id:Math.random().toString(36).substr(2, 18),
       nombre:['', Validators.required],
       apellido:['', Validators.required],
       correoPersonal:['', Validators.required],
